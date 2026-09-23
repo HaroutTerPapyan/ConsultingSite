@@ -10,8 +10,7 @@
   var FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
 
   var VALID_PAGES = [
-    "home", "flagship", "it-ops", "interfaces", "hrtech", "learning", "disability",
-    "compliance", "digital", "vendor", "analytics", "tools"
+    "home", "flagship", "it-ops", "interfaces", "compliance", "digital", "vendor"
   ];
 
   function showPage(id, opts) {
