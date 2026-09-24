@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Small Business IT Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --ground:#F3F5F2; --surface:#FFFFFF; --surface-2:#E9EEEA;
+  --ink:#16201C; --ink-soft:#4B5852; --ink-faint:#6E7A74;
+  --line:#D6DDD8; --line-strong:#B7C2BB;
+  --primary:#1C5A49; --primary-ink:#FFFFFF; --primary-soft:#DCEAE4;
+  --accent:#F2C443; --accent-ink:#2A2208; --hl:#F2C443;
+  --ok:#1F7A4D; --ok-bg:#DDF1E5;
+  --sched:#2458A6; --sched-bg:#DFE8F7;
+  --prog:#8A5A00; --prog-bg:#FBEFC9;
+  --shadow:0 1px 2px rgba(22,32,28,.06),0 8px 24px rgba(22,32,28,.07);
+  --display:"Bricolage Grotesque",ui-rounded,"Segoe UI",system-ui,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0F1512; --surface:#161E1A; --surface-2:#1C2621;
+    --ink:#E7EEEA; --ink-soft:#A9B6AF; --ink-faint:#86948C;
+    --line:#26312C; --line-strong:#3A4842;
+    --primary:#6FC4A6; --primary-ink:#0D1A15; --primary-soft:#1B3029;
+    --accent:#F2C443; --accent-ink:#2A2208; --hl:#6B5516;
+    --ok:#7AD7A2; --ok-bg:#16301F; --sched:#8DB4F2; --sched-bg:#172440; --prog:#F0C860; --prog-bg:#33290F;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0F1512; --surface:#161E1A; --surface-2:#1C2621;
+  --ink:#E7EEEA; --ink-soft:#A9B6AF; --ink-faint:#86948C;
+  --line:#26312C; --line-strong:#3A4842;
+  --primary:#6FC4A6; --primary-ink:#0D1A15; --primary-soft:#1B3029;
+  --accent:#F2C443; --accent-ink:#2A2208; --hl:#6B5516;
+  --ok:#7AD7A2; --ok-bg:#16301F; --sched:#8DB4F2; --sched-bg:#172440; --prog:#F0C860; --prog-bg:#33290F;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+img{max-width:100%}
+html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--ground);color:var(--ink);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1140px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--display);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:clamp(2.3rem,5.4vw,3.9rem);font-weight:800}
+h2{font-size:clamp(1.75rem,3.4vw,2.5rem);font-weight:700}
+h3{font-size:1.2rem;font-weight:700;letter-spacing:-.005em}
+p{margin:0}
+a{color:var(--primary)}
+.eyebrow{font:600 .74rem/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint)}
+.lede{color:var(--ink-soft);font-size:1.12rem;max-width:58ch}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 .96rem/1 var(--body);padding:14px 20px;border-radius:10px;border:1.5px solid var(--line-strong);background:var(--surface);color:var(--ink);text-decoration:none;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+.btn:hover{border-color:var(--ink);transform:translateY(-1px)}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:var(--primary-ink)}
+.btn-primary:hover{border-color:var(--primary);filter:brightness(1.08)}
+
+/* header */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--ground) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;height:68px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+.brand-mark{width:36px;height:36px;border-radius:9px;background:var(--primary);display:grid;place-items:center;position:relative;flex:none}
+.brand-mark::after{content:"";position:absolute;right:-3px;bottom:-3px;width:12px;height:12px;border-radius:3px;background:var(--accent);border:2px solid var(--ground)}
+.brand-mark svg{width:20px;height:20px}
+.brand-name{font:700 1.08rem/1.1 var(--display)}
+.brand-name small{display:block;font:500 .72rem/1.3 var(--body);color:var(--ink-faint);letter-spacing:.01em}
+.nav{display:flex;align-items:center;gap:26px}
+.nav a{color:var(--ink-soft);text-decoration:none;font-weight:500;font-size:.95rem}
+.nav a:hover{color:var(--ink)}
+.nav .btn{padding:10px 16px;font-size:.9rem}
+.nav a.btn-primary{color:var(--primary-ink)}
+[hidden]{display:none!important}
+.menu-btn{display:none;background:none;border:1.5px solid var(--line-strong);border-radius:9px;padding:9px 12px;color:var(--ink);font:600 .9rem var(--body);cursor:pointer}
+@media (max-width:860px){
+  .menu-btn{display:inline-flex}
+  .nav{display:none;position:absolute;left:0;right:0;top:68px;flex-direction:column;align-items:stretch;gap:0;background:var(--surface);border-bottom:1px solid var(--line);padding:8px 20px 18px;box-shadow:var(--shadow)}
+  .nav.open{display:flex}
+  .nav a{padding:12px 0;border-bottom:1px solid var(--line)}
+  .nav .btn{margin-top:14px;justify-content:center;border-bottom:none}
+}
+
+/* hero */
+.hero{padding-block:64px 72px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+@media (max-width:920px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+.hero h1 .hl{background:linear-gradient(transparent 62%,var(--hl) 62%,var(--hl) 92%,transparent 92%);padding-inline:2px}
+.hero .lede{margin-top:20px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:30px;color:var(--ink-soft);font-size:.92rem}
+.hero-meta span{display:inline-flex;align-items:center;gap:8px}
+.hero-meta span::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--primary)}
+
+/* queue card */
+.queue{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.queue-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.queue-head strong{font:700 1rem var(--display)}
+.queue-list{list-style:none;margin:0;padding:0}
+.q{display:grid;grid-template-columns:1fr auto;gap:4px 14px;padding:14px 20px;border-bottom:1px dashed var(--line)}
+.q:last-child{border-bottom:none}
+.q-title{font-weight:600;font-size:.97rem}
+.q-meta{grid-column:1;font:500 .76rem/1.4 var(--mono);color:var(--ink-faint)}
+.pill{grid-row:1/span 2;grid-column:2;align-self:center;font:600 .72rem/1 var(--mono);padding:6px 9px;border-radius:999px;white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}
+.pill.sched{background:var(--sched-bg);color:var(--sched)}
+.pill.prog{background:var(--prog-bg);color:var(--prog)}
+.queue-foot{padding:12px 20px;font-size:.8rem;color:var(--ink-faint);border-top:1px solid var(--line)}
+
+/* sections */
+.section{padding-block:80px}
+.section.alt{background:var(--surface);border-block:1px solid var(--line)}
+.section-head{display:grid;gap:14px;margin-bottom:44px;max-width:720px}
+
+/* services */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:920px){.svc-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.svc-grid{grid-template-columns:1fr}}
+.svc{padding:26px;border:1px solid var(--line);border-radius:14px;background:var(--ground);display:flex;flex-direction:column;gap:14px}
+.svc-icon{width:44px;height:44px;border-radius:11px;background:var(--primary-soft);display:grid;place-items:center;color:var(--primary)}
+.svc-icon svg{width:24px;height:24px}
+.svc p{color:var(--ink-soft);font-size:.96rem}
+.ticks{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:9px}
+.ticks li{position:relative;padding-left:26px;font-size:.95rem}
+.ticks li::before{content:"";position:absolute;left:0;top:.42em;width:14px;height:8px;border-left:2.5px solid var(--primary);border-bottom:2.5px solid var(--primary);transform:rotate(-45deg)}
+
+/* industries */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.tab{font:600 .95rem var(--body);padding:11px 18px;border-radius:999px;border:1.5px solid var(--line-strong);background:transparent;color:var(--ink-soft);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--ground)}
+.tab:not([aria-selected="true"]):hover{border-color:var(--ink);color:var(--ink)}
+.ind{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media (max-width:820px){.ind{grid-template-columns:1fr}}
+.ind-intro{grid-column:1/-1;font-size:1.08rem;color:var(--ink-soft);max-width:70ch}
+.ind-col{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.section.alt .ind-col{background:var(--ground)}
+.ind-col h3{font-size:1.02rem;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.ind-col h3 .dot{width:10px;height:10px;border-radius:3px}
+.ind-col.problems .dot{background:var(--accent)}
+.ind-col.fixes .dot{background:var(--primary)}
+.plain{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+.plain li{padding-bottom:11px;border-bottom:1px solid var(--line);font-size:.96rem}
+.plain li:last-child{border-bottom:none;padding-bottom:0}
+.also{margin-top:26px;color:var(--ink-soft);font-size:.95rem}
+.also strong{color:var(--ink)}
+
+/* process */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s;position:relative}
+@media (max-width:920px){.steps{grid-template-columns:1fr 1fr;row-gap:30px}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}}
+.step{counter-increment:s;padding-right:24px;position:relative}
+.step::before{content:counter(s);display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--surface);border:2px solid var(--primary);color:var(--primary);font:700 1rem var(--display);position:relative;z-index:1;margin-bottom:16px}
+.step::after{content:"";position:absolute;top:20px;left:40px;right:0;height:2px;background:repeating-linear-gradient(90deg,var(--line-strong) 0 6px,transparent 6px 12px)}
+.step:last-child::after{display:none}
+@media (max-width:920px){.step::after{display:none}}
+.step h3{font-size:1.06rem;margin-bottom:8px}
+.step p{color:var(--ink-soft);font-size:.94rem}
+
+/* engagement */
+.eng-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media (max-width:920px){.eng-grid{grid-template-columns:1fr}}
+.eng{border:1px solid var(--line);border-radius:14px;padding:26px;background:var(--ground);display:flex;flex-direction:column;gap:12px}
+.eng.feature{border:2px solid var(--primary);background:var(--surface);position:relative}
+.eng .fit{font:600 .74rem/1.3 var(--mono);color:var(--ink-faint);text-transform:uppercase;letter-spacing:.07em}
+.eng p{color:var(--ink-soft);font-size:.95rem}
+.eng .ticks{margin-top:auto;padding-top:8px}
+.eng-note{margin-top:22px;color:var(--ink-soft);font-size:.95rem}
+
+/* about */
+.about{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+@media (max-width:900px){.about{grid-template-columns:1fr}}
+.about p + p{margin-top:14px}
+.about .lede{font-size:1.05rem}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.fact{background:var(--surface);padding:20px}
+.fact .n{font:800 1.9rem/1 var(--display);color:var(--primary);font-variant-numeric:tabular-nums}
+.fact .l{font-size:.86rem;color:var(--ink-soft);margin-top:6px}
+.area{margin-top:22px;padding:20px;border-radius:14px;background:var(--primary-soft)}
+.area h3{font-size:1rem;margin-bottom:8px}
+.area p{font-size:.93rem;color:var(--ink-soft)}
+.area .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.area .chips span{font:500 .78rem var(--mono);padding:5px 9px;border-radius:6px;background:var(--surface);color:var(--ink-soft);border:1px solid var(--line)}
+
+/* faq */
+.faq{display:grid;gap:10px;max-width:820px}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 20px}
+.section.alt .faq details{background:var(--ground)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:600;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:600 1.3rem/1 var(--mono);color:var(--primary)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding-bottom:18px;color:var(--ink-soft);font-size:.96rem}
+
+/* contact */
+.contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.form{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.form-grid{grid-template-columns:1fr}}
+.field{display:grid;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-weight:600;font-size:.88rem}
+.field input,.field select,.field textarea{font:inherit;font-size:.96rem;padding:12px 13px;border-radius:9px;border:1.5px solid var(--line-strong);background:var(--ground);color:var(--ink);width:100%}
+.field textarea{min-height:120px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:20px}
+.form-note{font-size:.82rem;color:var(--ink-faint)}
+.confirm{margin-top:18px;padding:16px 18px;border-radius:10px;background:var(--ok-bg);color:var(--ink);font-size:.95rem}
+.direct{display:grid;gap:14px;margin-top:28px}
+.direct-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.direct-row .val{font:600 1rem var(--mono);user-select:all;word-break:break-all}
+.copy-btn{margin-left:auto;font:600 .8rem var(--body);padding:7px 12px;border-radius:7px;border:1.5px solid var(--line-strong);background:transparent;color:var(--ink);cursor:pointer}
+
+/* footer */
+.footer{padding-block:40px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.86rem}
+.footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px}
+.footer a{color:var(--ink-soft);text-decoration:none}
+</style>
+</head>
+<body>
+<!-- ============ HEADER ============ -->
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top" aria-label="Home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h13"/></svg>
+      </span>
+      <span class="brand-name">Firm Name<small>Websites, automation &amp; tech planning for local business</small></span>
+    </a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav">
+      <a href="#services">Services</a>
+      <a href="#industries">Who we help</a>
+      <a href="#process">How it works</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="btn btn-primary">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Los Angeles &amp; Santa Clarita Valley</span>
+      <h1 style="margin-top:16px">Less paperwork. Better tools. A business that <span class="hl">runs smoother</span>.</h1>
+      <p class="lede">Project-based technology work for law firms, restaurants, and local businesses: websites, automation, digital forms, Microsoft 365 solutions, and a clear plan for what to use next.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Book a free consultation &rarr;</a>
+        <a href="#services" class="btn">See what we build</a>
+      </div>
+      <div class="hero-meta">
+        <span>Fixed-scope projects</span>
+        <span>Built on tools you already pay for</span>
+        <span>Training &amp; documentation at handoff</span>
+      </div>
+    </div>
+
+    <div class="queue" aria-label="Examples of typical projects">
+      <div class="queue-head">
+        <strong>Typical projects</strong>
+        <span class="eyebrow">Examples</span>
+      </div>
+      <ul class="queue-list">
+        <li class="q"><span class="q-title">Paper client intake becomes an online form</span><span class="q-meta">Law office &middot; Microsoft Forms + SharePoint</span><span class="pill ok">Delivered</span></li>
+        <li class="q"><span class="q-title">New website with menu, hours, and catering requests</span><span class="q-meta">Restaurant &middot; website build</span><span class="pill prog">In build</span></li>
+        <li class="q"><span class="q-title">Invoice approvals routed automatically</span><span class="q-meta">Professional office &middot; Power Automate</span><span class="pill ok">Delivered</span></li>
+        <li class="q"><span class="q-title">Choosing a scheduling and booking system</span><span class="q-meta">Salon &middot; software selection</span><span class="pill sched">Planning</span></li>
+        <li class="q"><span class="q-title">Daily prep and inventory checklists go digital</span><span class="q-meta">Restaurant &middot; Power Apps</span><span class="pill prog">In build</span></li>
+      </ul>
+      <div class="queue-foot">Illustrative examples of the kinds of projects we take on.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section alt" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Services</span>
+      <h2>Build it, automate it, and plan what's next.</h2>
+      <p class="lede">Every engagement is a project with a defined scope and a finish line. You end up with something that works, your team knows how to use it, and it's written down.</p>
+    </div>
+    <div class="svc-grid">
+      <article class="svc">
+        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg></span>
+        <h3>Websites</h3>
+        <p>A clean, fast site that tells customers what they need and brings in inquiries.</p>
+        <ul class="ticks">
+          <li>New sites and redesigns</li>
+          <li>Menus, hours, services, and bios that are easy to update</li>
+          <li>Contact, booking, and catering request forms</li>
+          <li>Google Business Profile and domain setup</li>
+        </ul>
+      </article>
+      <article class="svc">
+        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></span>
+        <h3>Workflow automation</h3>
+        <p>Take the copy-paste, reminders, and follow-ups off your team's plate.</p>
+        <ul class="ticks">
+          <li>Approvals and routing with Power Automate</li>
+          <li>Automatic reminders, notifications, and hand-offs</li>
+          <li>Connecting the apps you already use</li>
+          <li>Reports that build themselves</li>
+        </ul>
+      </article>
+      <article class="svc">
+        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></span>
+        <h3>Digitizing paperwork</h3>
+        <p>Replace paper forms, binders, and clipboards with something searchable.</p>
+        <ul class="ticks">
+          <li>Online intake, request, and sign-off forms</li>
+          <li>Digital checklists and logs</li>
+          <li>Scanning and organizing existing files</li>
+          <li>One place to find every document</li>
+        </ul>
+      </article>
+      <article class="svc">
+        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg></span>
+        <h3>Microsoft 365 solutions</h3>
+        <p>Get real value from the Microsoft 365 license you're already paying for.</p>
+        <ul class="ticks">
+          <li>SharePoint sites for files and team info</li>
+          <li>Custom Power Apps for tracking and data entry</li>
+          <li>Teams, Forms, Lists, and Excel set up around your work</li>
+          <li>Staff training so it actually gets used</li>
+        </ul>
+      </article>
+      <article class="svc">
+        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span>
+        <h3>Software decisions</h3>
+        <p>An unbiased second opinion before you sign a contract.</p>
+        <ul class="ticks">
+          <li>Requirements based on how you actually work</li>
+          <li>Side-by-side comparison and vendor demos</li>
+          <li>Subscription review to cut what you don't use</li>
+          <li>Setup, data move, and rollout of the choice</li>
+        </ul>
+      </article>
+      <article class="svc">
+        <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l5-5 4 4 7-8"/><path d="M15 8h5v5"/></svg></span>
+        <h3>Tech &amp; operations planning</h3>
+        <p>A clear look at how work moves through your business, and how to improve it.</p>
+        <ul class="ticks">
+          <li>Process mapping and bottleneck review</li>
+          <li>Prioritized technology roadmap and budget</li>
+          <li>Operations improvements with measurable goals</li>
+          <li>Plans sized for a small team</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INDUSTRIES ============ -->
+<section class="section" id="industries">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Who we help</span>
+      <h2>Every business has its own paperwork problem.</h2>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Industries">
+      <button class="tab" role="tab" id="tab-law" aria-selected="true" aria-controls="panel-law">Law firms</button>
+      <button class="tab" role="tab" id="tab-food" aria-selected="false" aria-controls="panel-food" tabindex="-1">Restaurants &amp; food</button>
+      <button class="tab" role="tab" id="tab-office" aria-selected="false" aria-controls="panel-office" tabindex="-1">Professional offices</button>
+      <button class="tab" role="tab" id="tab-retail" aria-selected="false" aria-controls="panel-retail" tabindex="-1">Retail &amp; local shops</button>
+    </div>
+
+    <div class="ind" role="tabpanel" id="panel-law" aria-labelledby="tab-law">
+      <p class="ind-intro">Much of a small firm's day goes to intake, documents, and deadlines. Getting that out of paper and inboxes gives attorneys and staff hours back.</p>
+      <div class="ind-col problems"><h3><span class="dot"></span>What we usually find</h3>
+        <ul class="plain">
+          <li>Client intake on paper or retyped from emails</li>
+          <li>Case documents spread across drives, desktops, and attachments</li>
+          <li>Deadlines and follow-ups tracked in someone's head or a spreadsheet</li>
+          <li>A dated website that doesn't bring in inquiries</li>
+        </ul></div>
+      <div class="ind-col fixes"><h3><span class="dot"></span>What we build</h3>
+        <ul class="plain">
+          <li>Online intake forms that feed straight into your files</li>
+          <li>An organized, permissioned SharePoint document library</li>
+          <li>Automated reminders for deadlines and client follow-ups</li>
+          <li>A professional site with practice areas and a contact form</li>
+        </ul></div>
+    </div>
+
+    <div class="ind" role="tabpanel" id="panel-food" aria-labelledby="tab-food" hidden>
+      <p class="ind-intro">Restaurants run on checklists, schedules, and orders. When those live on clipboards and group texts, things slip.</p>
+      <div class="ind-col problems"><h3><span class="dot"></span>What we usually find</h3>
+        <ul class="plain">
+          <li>Prep, temperature, and opening/closing checklists on paper</li>
+          <li>Inventory counts in a notebook and reorders by memory</li>
+          <li>Catering and event requests buried in email and DMs</li>
+          <li>A website with an old menu and the wrong hours</li>
+        </ul></div>
+      <div class="ind-col fixes"><h3><span class="dot"></span>What we build</h3>
+        <ul class="plain">
+          <li>Digital checklists staff complete on a tablet or phone</li>
+          <li>A simple inventory tracker with low-stock alerts</li>
+          <li>Catering request forms that land in one organized place</li>
+          <li>A website where you can update the menu yourself</li>
+        </ul></div>
+    </div>
+
+    <div class="ind" role="tabpanel" id="panel-office" aria-labelledby="tab-office" hidden>
+      <p class="ind-intro">Accountants, real estate and mortgage offices, agencies, and consultants: small teams moving a lot of client information around.</p>
+      <div class="ind-col problems"><h3><span class="dot"></span>What we usually find</h3>
+        <ul class="plain">
+          <li>Paper forms and email chains doing the job of a workflow</li>
+          <li>The same data typed into three different systems</li>
+          <li>Too many software subscriptions and nobody tracking them</li>
+          <li>Seasonal crunches (like tax season) handled by working late</li>
+        </ul></div>
+      <div class="ind-col fixes"><h3><span class="dot"></span>What we build</h3>
+        <ul class="plain">
+          <li>Digital forms and approvals that replace paper and email</li>
+          <li>Automations that move data between your apps</li>
+          <li>A subscription review and a plan to consolidate tools</li>
+          <li>Client document request and status tracking</li>
+        </ul></div>
+    </div>
+
+    <div class="ind" role="tabpanel" id="panel-retail" aria-labelledby="tab-retail" hidden>
+      <p class="ind-intro">Shops, studios, salons, gyms, and service businesses where the owner is also the office manager.</p>
+      <div class="ind-col problems"><h3><span class="dot"></span>What we usually find</h3>
+        <ul class="plain">
+          <li>Bookings by phone, text, and a paper calendar</li>
+          <li>Staff schedules and time-off requests in a group chat</li>
+          <li>No real website, or one nobody can update</li>
+          <li>Unsure which booking or POS system is worth paying for</li>
+        </ul></div>
+      <div class="ind-col fixes"><h3><span class="dot"></span>What we build</h3>
+        <ul class="plain">
+          <li>A website with online booking and inquiry forms</li>
+          <li>Simple scheduling and time-off request workflows</li>
+          <li>A side-by-side software comparison and setup of the winner</li>
+          <li>Owner dashboards for sales, bookings, and staffing</li>
+        </ul></div>
+    </div>
+
+    <p class="also">Don't see your business? <strong>If it runs on paper, spreadsheets, or email chains, we can help.</strong> <a href="#contact">Tell us about it</a>.</p>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="section alt" id="process">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>From idea to in use.</h2>
+    </div>
+    <ol class="steps">
+      <li class="step"><h3>Free consultation</h3><p>We talk through how your business runs today and where time is getting lost.</p></li>
+      <li class="step"><h3>Scope &amp; quote</h3><p>You get a written scope, timeline, and fixed quote before any work starts.</p></li>
+      <li class="step"><h3>Build &amp; review</h3><p>We build in stages and check in with you along the way, so there are no surprises.</p></li>
+      <li class="step"><h3>Launch &amp; handoff</h3><p>Your team gets trained, and you get documentation you can keep.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ ENGAGEMENT ============ -->
+<section class="section" id="engage">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Ways to work together</span>
+      <h2>Start with a plan, a build, or both.</h2>
+    </div>
+    <div class="eng-grid">
+      <article class="eng">
+        <span class="fit">Best if you're not sure where to start</span>
+        <h3>Planning &amp; assessment</h3>
+        <p>A review of your processes, software, and paperwork, ending in a prioritized plan you can act on.</p>
+        <ul class="ticks"><li>Process and tools review</li><li>Written roadmap with priorities</li><li>Budget ranges for each step</li></ul>
+      </article>
+      <article class="eng feature">
+        <span class="fit">Most common</span>
+        <h3>Build project</h3>
+        <p>A defined build with a clear finish line, like a website, an automated workflow, or a custom app.</p>
+        <ul class="ticks"><li>Written scope and fixed quote</li><li>Built in reviewable stages</li><li>Training and documentation at handoff</li></ul>
+      </article>
+      <article class="eng">
+        <span class="fit">Best after a first project</span>
+        <h3>Enhancements</h3>
+        <p>Follow-on improvements once something is live and your team has ideas for what's next.</p>
+        <ul class="ticks"><li>Scoped as small add-on projects</li><li>New features, forms, or reports</li><li>No ongoing contract required</li></ul>
+      </article>
+    </div>
+    <p class="eng-note">Every project is quoted after a free consultation. <a href="#contact">Request one</a>.</p>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section alt" id="about">
+  <div class="wrap about">
+    <div>
+      <span class="eyebrow">About</span>
+      <h2 style="margin-top:14px;margin-bottom:22px">Enterprise experience, scaled to a small business.</h2>
+      <p class="lede">Founded by <strong>Harout Ter-Papyan</strong>, an IT operations leader and developer who has spent more than a decade improving how large organizations work.</p>
+      <p style="color:var(--ink-soft)">That work includes building Power Apps, Power Automate, and SharePoint solutions that replaced paper forms and manual tracking, designing dashboards leadership relied on, writing business cases, and helping teams choose and roll out new software. Small businesses benefit from the same approach: understand the process first, then build something simple that fits it.</p>
+      <p style="color:var(--ink-soft)">You'll work directly with the person doing the build, in plain English, from first conversation to handoff.</p>
+    </div>
+    <div>
+      <div class="facts">
+        <div class="fact"><div class="n">10+</div><div class="l">Years in IT operations and development</div></div>
+        <div class="fact"><div class="n">25%</div><div class="l">Estimated manual admin work cut by automation at a 5,000+ user organization</div></div>
+        <div class="fact"><div class="n">M365</div><div class="l">Power Apps, Power Automate, SharePoint</div></div>
+        <div class="fact"><div class="n">BS&nbsp;&middot;&nbsp;MBA</div><div class="l">Computer Science, CSUN &middot; MBA, Cal Poly Pomona</div></div>
+      </div>
+      <div class="area">
+        <h3>Service area</h3>
+        <p>In-person meetings and training across the Santa Clarita Valley, San Fernando Valley, and greater Los Angeles. Remote projects anywhere.</p>
+        <div class="chips"><span>Santa Clarita</span><span>Valencia</span><span>San Fernando Valley</span><span>Burbank</span><span>Glendale</span><span>Los Angeles</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Questions</span>
+      <h2>Common questions.</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Do you offer day-to-day IT support or network setup?</summary><p>No. We focus on projects: websites, automation, digital forms, Microsoft 365 solutions, software decisions, and planning. If you need a help desk or network work, we're happy to point you to someone and work alongside them.</p></details>
+      <details><summary>Do we need to buy new software?</summary><p>Often not. Many businesses already pay for Microsoft 365 or Google Workspace and use a fraction of it. We start with what you have and only recommend something new when it clearly pays off.</p></details>
+      <details><summary>We're only a few people. Is that too small?</summary><p>No. Small teams feel paperwork and manual work the most, and a single well-built form or automation can save hours every week.</p></details>
+      <details><summary>What happens after the project is done?</summary><p>You get training and written documentation, so your team can run it on its own. If you want changes later, we scope them as small follow-on projects.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section alt" id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <span class="eyebrow">Get in touch</span>
+      <h2 style="margin-top:14px;margin-bottom:16px">Tell us what you'd like to improve.</h2>
+      <p class="lede">A process that eats up time, a website that needs work, or a software decision you're stuck on. We'll reply to set up a free consultation.</p>
+      <div class="direct">
+        <div class="direct-row"><span class="eyebrow" style="width:100%">Email</span><span class="val" id="email-val">haroutter@gmail.com</span><button class="copy-btn" data-copy="haroutter@gmail.com">Copy</button></div>
+        <div class="direct-row"><span class="eyebrow" style="width:100%">Based in</span><span class="val">Los Angeles &amp; Santa Clarita, CA</span></div>
+      </div>
+    </div>
+
+    <div>
+      <form class="form" id="lead-form" novalidate>
+        <div class="form-grid">
+          <div class="field"><label for="f-name">Your name</label><input id="f-name" name="name" type="text" required autocomplete="name"></div>
+          <div class="field"><label for="f-biz">Business name</label><input id="f-biz" name="business" type="text" autocomplete="organization"></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" required autocomplete="email"></div>
+          <div class="field"><label for="f-phone">Phone <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="f-type">Type of business</label>
+            <select id="f-type" name="type">
+              <option>Law firm</option><option>Restaurant or food business</option><option>Professional office</option><option>Retail or local shop</option><option>Other</option>
+            </select></div>
+          <div class="field"><label for="f-size">Team size</label>
+            <select id="f-size" name="size">
+              <option>1&ndash;5 people</option><option selected>6&ndash;15 people</option><option>16&ndash;50 people</option><option>50+ people</option>
+            </select></div>
+          <div class="field full"><label for="f-need">What are you interested in?</label>
+            <select id="f-need" name="need">
+              <option>Website</option><option>Automating a workflow</option><option>Digitizing paper forms or files</option><option>Microsoft 365 / Power Platform solution</option><option>Choosing new software</option><option>Tech or operations planning</option><option>Not sure yet</option>
+            </select></div>
+          <div class="field full"><label for="f-msg">Tell us a bit more</label><textarea id="f-msg" name="message" required placeholder="What process or project you have in mind, the tools you use today, any deadlines..."></textarea></div>
+        </div>
+        <div class="form-foot">
+          <button type="submit" class="btn btn-primary">Send message</button>
+          <span class="form-note">We'll reply by email, usually within one business day.</span>
+        </div>
+        <div class="confirm" id="confirm" hidden></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>&copy; 2026 Firm Name &middot; Websites, automation &amp; tech planning for local business &middot; Los Angeles &amp; Santa Clarita, CA</span>
+    <span><a href="#services">Services</a> &middot; <a href="#industries">Who we help</a> &middot; <a href="#contact">Contact</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var CONTACT_EMAIL = "haroutter@gmail.com";
+  // Replace with a real Formspree endpoint (formspree.io/f/xxxxxxxx) when hosting the site.
+  var FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+
+  // mobile menu
+  var menuBtn = document.getElementById("menu-btn"), nav = document.getElementById("nav");
+  menuBtn.addEventListener("click", function(){
+    var open = nav.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  nav.querySelectorAll("a").forEach(function(a){ a.addEventListener("click", function(){ nav.classList.remove("open"); menuBtn.setAttribute("aria-expanded","false"); }); });
+
+  // industry tabs
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  function select(tab){
+    tabs.forEach(function(t){
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener("click", function(){ select(t); });
+    t.addEventListener("keydown", function(e){
+      var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      var n = tabs[(i + d + tabs.length) % tabs.length]; select(n); n.focus();
+    });
+  });
+
+  // copy buttons
+  document.querySelectorAll(".copy-btn").forEach(function(b){
+    b.addEventListener("click", function(){
+      var text = b.getAttribute("data-copy"), orig = b.textContent;
+      function done(ok){
+        b.textContent = ok ? "Copied" : "Select to copy";
+        if (!ok) { var v = document.getElementById("email-val"); var r = document.createRange(); r.selectNodeContents(v); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+        setTimeout(function(){ b.textContent = orig; }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function(){done(true);}, function(){done(false);});
+      else done(false);
+    });
+  });
+
+  // form
+  var form = document.getElementById("lead-form"), confirmEl = document.getElementById("confirm");
+  function val(n){ var el = form.elements[n]; return el ? el.value.trim() : ""; }
+  function esc(s){ return s.replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function show(html){ confirmEl.innerHTML = html; confirmEl.hidden = false; }
+  function fallback(d){
+    var subject = "Project inquiry: " + (d.business || d.name) + " (" + d.type + ")";
+    var body = ["Name: "+d.name,"Business: "+d.business,"Email: "+d.email,"Phone: "+d.phone,"Type: "+d.type,"Team size: "+d.size,"Need: "+d.need,"",d.message].join("\n");
+    show("Thanks, " + esc(d.name.split(" ")[0] || "there") + ". To make sure this reaches us, please email <strong>" + CONTACT_EMAIL + "</strong> with your note. Your email app may also open with it pre-filled.");
+    var a = document.createElement("a");
+    a.href = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    a.hidden = true; document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); }, 500);
+  }
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    var d = { name:val("name"), business:val("business"), email:val("email"), phone:val("phone"), type:val("type"), size:val("size"), need:val("need"), message:val("message") };
+    if (FORMSPREE_ENDPOINT.indexOf("YOUR_FORM_ID") !== -1) { fallback(d); return; }
+    var fd = new FormData(form); fd.append("_subject", "Project inquiry: " + (d.business || d.name));
+    fetch(FORMSPREE_ENDPOINT, { method:"POST", headers:{Accept:"application/json"}, body:fd })
+      .then(function(r){ if (r.ok) { show("Thanks, " + esc(d.name.split(" ")[0] || "there") + ". Your message was sent. We'll reply to " + esc(d.email) + "."); form.reset(); } else fallback(d); })
+      .catch(function(){ fallback(d); });
+  });
+})();
+</script>
+</body>
+</html>
